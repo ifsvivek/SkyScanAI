@@ -4,7 +4,7 @@
 
 This report details an AI-powered pollution source detection system utilizing the YOLOv5 object detection model.
 
-![SkyScanAI](./image/air/image.png)
+![SkyScanAI](./image/AnalyzeImages/image.png)
 
 ## **2. Core Components**
 
@@ -43,7 +43,7 @@ Includes:
 
 ## **3. Data Flow**
 
-![Data Flow](./image/air/seq.png)
+![Data Flow](./image/AnalyzeImages/seq.png)
 
 ## **4. Key Functions**
 
