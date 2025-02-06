@@ -60,7 +60,9 @@ def display_detections(img, detections, class_names):
     plt.imshow(img_draw)
     plt.axis("off")
     plt.title("Detected Pollution Sources with Impact Areas")
-    plt.savefig("output.png", dpi=300, bbox_inches="tight", pad_inches=0)
+    plt.savefig(
+        "AnalyzeImages/output/output.png", dpi=300, bbox_inches="tight", pad_inches=0
+    )
 
 
 def filter_pollution_sources(detections_df):
