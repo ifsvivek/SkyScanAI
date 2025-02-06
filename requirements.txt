@@ -1,0 +1,14 @@
+# Image processing
+opencv-python
+numpy
+matplotlib
+
+# Deep learning 
+torch
+torchvision
+
+# YOLOv5 dependencies
+pandas
+seaborn
+PyYAML
+tqdm
