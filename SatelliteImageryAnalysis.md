@@ -1,118 +1,74 @@
-# **Satellite Imagery Analysis Report**
+# **Satellite Imagery Analysis System**
 
-## **1. Overview**
+## **1. Core Concept**
 
-This report details an automated system for analyzing satellite imagery to detect and quantify land use changes, particularly focusing on deforestation and afforestation over time.
+System for analyzing changes between two satellite images to detect deforestation and afforestation.
 
-![](./image/SatelliteImageryAnalysis/1.png)
+## **2. Technical Implementation**
 
-## **2. Core Components**
-
-### **2.1 Image Loading and Preprocessing**
-
--   Utilizes OpenCV for loading satellite images
--   Converts images from BGR to RGB color space
--   Performs input validation and file existence checks
-
-![](<./SatelliteImageryAnalysis/output/NEW_AD(2009-2019).png>)
-
-### **2.2 Image Registration**
-
--   Ensures images are correctly aligned
--   Validates matching image dimensions
--   Currently assumes pre-aligned input images
-
-### **2.3 Change Detection Algorithm**
-
-#### **Key Parameters:**
+### **2.1 Core Functions**
 
 ```python
-threshold_deforestation = -20
-threshold_afforestation = 20
-kernel_size = 5
+def load_image(image_path):
+    # Loads and converts BGR to RGB
+    return img_rgb
+
+def register_images(img1, img2):
+    # Validates matching dimensions
+    return img1, img2
+
+def change_detection(img1, img2, threshold_deforestation=-20,
+                    threshold_afforestation=20, kernel_size=5):
+    # Detects changes using HSV color space
+    return deforestation_mask, afforestation_mask
+
+def analyze_changes(deforestation_mask, afforestation_mask):
+    # Calculates change percentages
+    return percent_deforestation, percent_afforestation
 ```
 
-#### **Process:**
+### **2.2 Change Detection Parameters**
 
-1. Converts images to HSV color space
-2. Analyzes changes in the Value channel
-3. Applies thresholding to highlight differences
-4. Uses morphological operations for noise reduction
+-   `threshold_deforestation`: -20 (brightness decrease)
+-   `threshold_afforestation`: 20 (brightness increase)
+-   `kernel_size`: 5x5 (morphological operations)
 
-### **2.4 Analysis Methods**
+### **2.3 Visualization Components**
 
-Calculates:
-
--   Percentage of deforested area
--   Percentage of afforested area
--   Generates binary masks for changed regions
-
-### **2.5 Visualization Components**
-
-Creates a six-panel visualization displaying:
+Six-panel output showing:
 
 1. Original image (Time 1)
 2. Original image (Time 2)
-3. Overlay visualization
+3. Change overlay
 4. Deforestation mask
 5. Afforestation mask
-6. Annotated changes
+6. Contour annotation
 
-## **3. Implementation Details**
-
-### **3.1 Color Coding**
-
--   **Red**: Represents deforestation
--   **Green**: Represents afforestation
-
-### **3.2 Mask Generation**
-
-#### **Processing Steps:**
+## **3. Usage Example**
 
 ```python
-1. Apply binary threshold
-2. Perform morphological opening
-3. Perform morphological closing
-4. Detect contours
+# Load images
+img1 = load_image("2009.png")
+img2 = load_image("2019.png")
+
+# Detect changes
+deforestation, afforestation = change_detection(img1, img2)
+
+# Get statistics
+defo_pct, affo_pct = analyze_changes(deforestation, afforestation)
+print(f"Deforestation: {defo_pct:.2f}%")
+print(f"Afforestation: {affo_pct:.2f}%")
 ```
 
-### **3.3 Output Generation**
+## **4. Technical Requirements**
 
--   Saves combined visualization plots
--   Prints change percentages
--   Generates annotated imagery for analysis
+-   Python 3.7+
+-   OpenCV
+-   NumPy
+-   Matplotlib
 
-## **4. Performance Considerations**
+## **5. Limitations**
 
-### **4.1 Memory Usage**
-
--   Efficiently processes large satellite images
--   Manages multiple array copies
--   Requires adequate RAM allocation
-
-### **4.2 Processing Time**
-
--   Identified bottlenecks:
-    -   Image loading
-    -   Morphological operations
-    -   Contour detection
-
-## **5. Future Improvements**
-
-### **5.1 Potential Enhancements**
-
-1. Implement automated image registration
-2. Add support for multi-spectral imagery
-3. Integrate machine learning classification
-4. Enable batch processing capabilities
-5. Develop progress tracking features
-
-### **5.2 Known Limitations**
-
--   Assumes pre-aligned images
--   Limited to binary classification
--   Uses fixed threshold values
-
-## **6. Conclusion**
-
-The system effectively detects and visualizes land use changes using satellite imagery, providing quantitative insights into deforestation and afforestation patterns. Future improvements aim to enhance automation, classification accuracy, and processing efficiency.
+-   Requires pre-aligned images
+-   Uses fixed thresholds
+-   Limited to RGB imagery

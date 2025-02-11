@@ -1,77 +1,87 @@
-# **Analyze Images**
+# **Air Pollution Source Detection System**
 
-## **1. Overview**
+## **1. Core Concept**
 
-This report details an AI-powered pollution source detection system utilizing the YOLOv5 object detection model.
+This system uses YOLOv5 object detection to identify potential pollution sources in images.
 
-![SkyScanAI](./image/AnalyzeImages/image.png)
+## **2. Technical Implementation**
 
-## **2. Core Components**
+### **2.1 Object Detection Pipeline**
 
-### **2.1 Image Loading**
+```python
+# Initialize YOLOv5
+model = torch.hub.load("ultralytics/yolov5", "yolov5s", pretrained=True)
+
+# Process image
+results = model(image)
+detections_df = results.pandas().xyxy[0]
+
+# Filter pollution sources
+filtered_df = filter_pollution_sources(detections_df)
+```
+
+### **2.2 Detected Source Categories**
+
+The system detects these objects:
+
+-   Cars
+-   Trucks
+-   Buses
+-   Motorcycles
+-   Trains
+-   Boats
+-   Airplanes
+
+### **2.3 Visualization Features**
+
+-   Red overlay for detected areas (30% transparency)
+-   Bounding boxes with white borders
+-   Confidence scores
+-   Class labels
+
+## **3. Core Functions**
+
+### **3.1 Image Loading**
 
 ```python
 def load_image(image_path):
-    img_bgr = cv2.imread(image_path)
-    img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
+    # Loads image and converts BGR to RGB
     return img_rgb
 ```
 
--   Handles image loading with OpenCV
--   Converts images from BGR to RGB format
+### **3.2 Pollution Source Detection**
 
-### **2.2 Pollution Source Detection**
-
--   Utilizes the YOLOv5s pretrained model
--   Detects the following pollution sources:
-    -   Cars
-    -   Trucks
-    -   Buses
-    -   Motorcycles
-    -   Trains
-    -   Boats
-    -   Airplanes
-
-### **2.3 Visualization System**
-
-Includes:
-
-1. Pollution mask generation
-2. Bounding box drawing
-3. Label overlay
-4. Transparency management
-
-## **3. Data Flow**
-
-![Data Flow](./image/AnalyzeImages/seq.png)
-
-## **4. Key Functions**
-
-| Function                     | Purpose          | Input                      | Output             |
-| ---------------------------- | ---------------- | -------------------------- | ------------------ |
-| `load_image()`               | Image loading    | Image path                 | RGB image array    |
-| `create_pollution_mask()`    | Mask generation  | Image, detections          | Mask array         |
-| `filter_pollution_sources()` | Source filtering | Detections DataFrame       | Filtered DataFrame |
-| `display_detections()`       | Visualization    | Image, detections, classes | Rendered output    |
-
-## **5. Output Format**
-
--   High-resolution output (300 DPI)
--   Saved as `output.png`
--   Includes:
-    -   Bounding boxes
-    -   Confidence scores
-    -   Class labels
-    -   Pollution impact visualization
-
-## **6. Usage Example**
-
-```bash
-python app.py
+```python
+def filter_pollution_sources(detections_df):
+    pollution_sources = [
+        "car", "truck", "bus", "motorcycle",
+        "train", "boat", "airplane"
+    ]
+    return filtered_df
 ```
 
-## **7. Performance Considerations**
+### **3.3 Visualization**
 
--   Supports both CPU and GPU processing
--   Memory usage scales with image size
--   Balances visualization quality and processing speed
+```python
+def create_pollution_mask(img, detections):
+    # Creates red overlay mask
+    return mask
+
+def display_detections(img, detections, class_names):
+    # Draws bounding boxes and overlays
+    # Saves output as PNG
+```
+
+## **4. Output Specifications**
+
+-   Resolution: 300 DPI
+-   Format: PNG
+-   Figure size: 20x12 inches
+-   Transparent overlays (30% opacity)
+
+## **5. Technical Requirements**
+
+-   Python with PyTorch
+-   YOLOv5
+-   OpenCV
+-   Matplotlib
