@@ -22,17 +22,27 @@ from sklearn.metrics import (
 
 
 # -------------------------------
-# 1. Force CPU usage (ignore GPUs)
+# 1. Configure GPU
 # -------------------------------
-def force_cpu_mode():
-    """Force TensorFlow to use CPU by hiding all GPUs"""
-    tf.config.set_visible_devices([], "GPU")
-    print("Forced CPU mode: No GPUs will be used.")
+def configure_gpu():
+    """Configure GPU for optimal usage"""
+    gpus = tf.config.list_physical_devices('GPU')
+    if gpus:
+        try:
+            # Allow memory growth
+            for gpu in gpus:
+                tf.config.experimental.set_memory_growth(gpu, True)
+            print(f"Found {len(gpus)} GPU(s). Memory growth enabled.")
+        except RuntimeError as e:
+            print(e)
+    else:
+        print("No GPUs found. Running on CPU.")
 
+# Call the configuration function
+configure_gpu()
 
-# Call the function to force CPU mode and explicitly set device to '/CPU:0'
-force_cpu_mode()
-device = "/CPU:0"
+# Replace the device variable with GPU device
+device = "/GPU:0"
 
 # -------------------------------
 # 2. Create folder for saving diagrams
@@ -119,8 +129,8 @@ callbacks = [
     ),
 ]
 
-# Use a smaller batch size for CPU training
-batch_size = 8
+
+batch_size = 1
 
 with tf.device(device):
     history = model.fit(
@@ -128,7 +138,7 @@ with tf.device(device):
         y=y_train,
         validation_data=(x_origin_valid, y_valid),
         batch_size=batch_size,
-        epochs=15,
+        epochs=150,
         callbacks=callbacks,
     )
 
