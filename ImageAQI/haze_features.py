@@ -78,7 +78,7 @@ def main():
 
     # Use absolute path
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    img_path = os.path.join(current_dir, "i2.png")
+    img_path = os.path.join(current_dir, "image.png")
 
     if not os.path.exists(img_path):
         print(f"Error: Image not found at {img_path}")
