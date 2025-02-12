@@ -1,2 +1,8 @@
 .venv/
 __pycache__
+kaggle/
+*.zip
+*.out
+*.csv
+*.h5
+.vscode/
